@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -16,9 +17,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CacheManager cacheManager;
+
 
     @Test
-    public void test() throws Exception {
+    public void creatUsers() throws Exception {
         // 创建10条记录
         userRepository.save(new User("AAA", 10));
         userRepository.save(new User("BBB", 20));
@@ -42,6 +46,20 @@ public class UserRepositoryTest {
         userRepository.delete(userRepository.findByName("AAA"));
         // 测试findAll, 查询所有记录, 验证上面的删除是否成功
         Assert.assertEquals(9, userRepository.findAll().size());
+    }
+
+    @Test
+    public void test() throws Exception {
+        User u1 = userRepository.findByName("BBB");
+        if(u1 != null){
+            System.out.println("第一次查询：" + u1.getAge());
+        }
+
+        User u2 = userRepository.findByName("BBB");
+        if(u2!=null){
+            System.out.println("第二次查询：" + u2.getAge());
+        }
+
     }
 
 }
