@@ -1,9 +1,12 @@
 package com.twg.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 
 /**
  * Created by twg on 2017/6/15.
@@ -15,9 +18,10 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "用户名不能为空")
     private String name;
 
-    @Column(nullable = false)
+    @Min(value = 18,message = "年龄应该大与18")
     private Integer age;
 
     public User() {
@@ -50,5 +54,14 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
