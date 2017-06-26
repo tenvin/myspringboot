@@ -2,6 +2,8 @@ package com.twg.controller;
 
 import com.twg.dto.Result;
 import com.twg.entity.User;
+import com.twg.enums.ResultEnum;
+import com.twg.exception.UserException;
 import com.twg.repository.UserRepository;
 import com.twg.service.UserService;
 import com.twg.utils.ResultUtil;
@@ -50,6 +52,15 @@ public class UserController {
 
     @GetMapping(value = "/users/getAge/{id}")
     public void getAge(@PathVariable("id") Long id) throws Exception {
-        userService.getAge(id);
+        User user = userRepository.findOne(id);
+        Integer age = user.getAge();
+
+        if(age>60){
+            throw new UserException(ResultEnum.ABOVE_60);
+        }else if(age<40){
+            throw new UserException(ResultEnum.UNDER_40);
+        }
+
+
     }
 }

@@ -28,4 +28,8 @@ public class UserService {
             throw new Exception("您已退休");
         }
     }
+
+    public User findOne(long id) {
+        return userRepository.findOne(id);
+    }
 }
