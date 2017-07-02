@@ -32,4 +32,8 @@ public class UserService {
     public User findOne(long id) {
         return userRepository.findOne(id);
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByName(username);
+    }
 }

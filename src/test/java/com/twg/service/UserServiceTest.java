@@ -15,12 +15,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class UserServiceTest {
 
-    @Autowired UserService userService;
+    @Autowired
+    UserService userService;
 
     @Test
-    public void findOne() throws Exception {
+    public void findOneTest() throws Exception {
         User user = userService.findOne(6);
-        Assert.assertEquals(new Integer(60),user.getAge());
+        Assert.assertEquals(new Integer(60), user.getAge());
+    }
+
+    @Test
+    public void findByNameTest() {
+        User user = userService.findByUsername("AAA");
+        System.out.println(user);
     }
 
 }

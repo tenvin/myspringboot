@@ -21,7 +21,7 @@ public class User {
     @NotBlank(message = "用户名不能为空")
     private String name;
 
-    @Min(value = 18,message = "年龄应该大与18")
+    //@Min(value = 18,message = "年龄应该大与18")
     private Integer age;
 
     public User() {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head lang="zh-CN">
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>111</title>
 
     <link rel="stylesheet" href="/css/bootstrap.css"/>
@@ -12,11 +12,13 @@
 
 </head>
 <body>
-<div class="wrapper">
-    <h1>index</h1>
-    <@test>
-       <span>${user.age}</span>
-    </@test>
+<div >
+    <h1>users</h1>
+    <#list users as user>
+        用户名：${user.name}
+        年 龄: ${user.age}
+    </#list>
+
 </div>
 </body>
 </html>

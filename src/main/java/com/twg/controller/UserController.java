@@ -10,6 +10,8 @@ import com.twg.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * Created by twg on 2017/6/22.
  */
-@RestController
+@Controller
 public class UserController {
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -33,8 +35,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(value = "/users")
-    public List<User> userList(){
-        return userRepository.findAll();
+    public String userList(Model model){
+        List<User> userList =  userRepository.findAll();
+        model.addAttribute("users",userList);
+        return "users";
     }
 
     @PostMapping(value = "/users")
