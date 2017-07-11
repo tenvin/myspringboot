@@ -6,6 +6,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -45,27 +46,28 @@ public class HttpClientTest {
             valuePairs.add(new BasicNameValuePair("password", "703168"));
             valuePairs.add(new BasicNameValuePair("remember_me", "true"));
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(valuePairs, Consts.UTF_8);
-//
-//            //创建一个post请求
-//            HttpPost post = new HttpPost("http://www.zhihu.com/login/email");
-//            post.setHeader("Cookie", " cap_id=\"YjA5MjE0YzYyNGQ2NDY5NWJhMmFhN2YyY2EwODIwZjQ=|1437610072|e7cc307c0d2fe2ee84fd3ceb7f83d298156e37e0\"; ");
-//
-//            //注入post数据
-//            post.setEntity(entity);
-//            HttpResponse httpResponse = httpClient.execute(post);
-//            //打印登录是否成功信息
-//            printResponse(httpResponse);
-//
-//            //构造一个get请求，用来测试登录cookie是否拿到
-//            HttpGet g = new HttpGet("http://www.zhihu.com/question/following");
-//            //得到post请求返回的cookie信息
-//            String c = setCookie(httpResponse);
-//            //将cookie注入到get请求头当中
-//            g.setHeader("Cookie",c);
-//            CloseableHttpResponse r = httpClient.execute(g);
-//            String content = EntityUtils.toString(r.getEntity());
-//            System.out.println(content);
-//            r.close();
+
+            //创建一个post请求
+            HttpPost post = new HttpPost("http://www.zhihu.com/login/email");
+            post.setHeader("Cookie", " cap_id=\"YjA5MjE0YzYyNGQ2NDY5NWJhMmFhN2YyY2EwODIwZjQ=|1437610072|e7cc307c0d2fe2ee84fd3ceb7f83d298156e37e0\"; ");
+
+            //注入post数据
+            post.setEntity(entity);
+            HttpResponse httpResponse = httpClient.execute(post);
+            //打印登录是否成功信息
+            printResponse(httpResponse);
+
+            //构造一个get请求，用来测试登录cookie是否拿到
+            HttpGet g = new HttpGet("http://www.zhihu.com/question/following");
+            //得到post请求返回的cookie信息
+            String c = setCookie(httpResponse);
+            //将cookie注入到get请求头当中
+            g.setHeader("Cookie",c);
+            CloseableHttpResponse r = httpClient.execute(g);
+            String content = EntityUtils.toString(r.getEntity());
+            System.out.println(content);
+            r.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
