@@ -17,14 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CacheManager cacheManager;
-
 
     @Test
     public void creatUsers() throws Exception {
         // 创建10条记录
-        userRepository.save(new User("AAA", 10));
+        userRepository.save(new User("AAA", 18));
         userRepository.save(new User("BBB", 20));
         userRepository.save(new User("CCC", 30));
         userRepository.save(new User("DDD", 40));

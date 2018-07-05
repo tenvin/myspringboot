@@ -1,5 +1,6 @@
 package com.twg.aop;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
@@ -16,45 +17,39 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Aspect
 @Component
+@Slf4j
 public class HttpAspect {
-    private final static Logger logger= LoggerFactory.getLogger(HttpAspect.class);
-
-//    @Before("execution(public * com.twg.controller.UserController.userList(..))")
-//    public void log(){
-//        System.out.println("1111");
-//    }
 
     @Pointcut("execution(public * com.twg.controller.UserController.*(..))")
     public void log(){
-
     }
 
     @Before("log()")
     public void doBefore(JoinPoint joinPoint){
-        logger.info("before");
+        log.info("before");
         ServletRequestAttributes attributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        logger.info("url={}",request.getRequestURL());
+        log.info("url={}",request.getRequestURL());
 
-        logger.info("method={}",request.getMethod());
+        log.info("method={}",request.getMethod());
 
-        logger.info("ip={}",request.getRemoteAddr());
+        log.info("ip={}",request.getRemoteAddr());
 
-        logger.info("class_method={}", joinPoint.getSignature().getDeclaringTypeName()
+        log.info("class_method={}", joinPoint.getSignature().getDeclaringTypeName()
                 +"."+joinPoint.getSignature().getName());
 
-        logger.info("args={}",joinPoint.getArgs());
+        log.info("args={}",joinPoint.getArgs());
     }
 
     @After("log()")
     public void doAfter(){
-        logger.info("after");
+        log.info("after");
     }
 
     @AfterReturning(returning = "object",pointcut = "log()")
     public void doAfterReturning(Object object){
-        logger.info("response={}",object.toString());
+        log.info("response={}",object.toString());
     }
 
 }

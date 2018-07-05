@@ -1,6 +1,6 @@
 package com.twg.utils;
 
-import com.twg.dto.Result;
+import com.twg.VO.Result;
 
 /**
  * Created by twg on 2017/6/23.

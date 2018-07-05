@@ -1,22 +1,14 @@
 package com.twg.controller;
 
-import com.twg.dto.Result;
+import com.twg.VO.Result;
 import com.twg.entity.User;
-import com.twg.enums.ResultEnum;
-import com.twg.exception.UserException;
-import com.twg.repository.UserRepository;
 import com.twg.service.UserService;
 import com.twg.utils.ResultUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,47 +16,44 @@ import java.util.List;
 /**
  * Created by twg on 2017/6/22.
  */
-@Controller
+@RestController
+@Slf4j
 public class UserController {
 
-    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private UserService userService;
 
     @GetMapping(value = "/users")
-    public String userList(Model model){
-        List<User> userList =  userRepository.findAll();
-        model.addAttribute("users",userList);
-        return "users";
+    public Result<User> findAll(){
+        List<User> userList =  userService.findAll();
+        return ResultUtil.success(userList);
     }
-
+    /**
+     * 增加一个用户
+     */
     @PostMapping(value = "/users")
     public Result<User> userAdd(@Valid User user, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            log.info(bindingResult.getFieldError().getDefaultMessage());
             return ResultUtil.error(1,bindingResult.getFieldError().getDefaultMessage());
         }
 
         user.setName(user.getName());
         user.setAge(user.getAge());
 
-        return ResultUtil.success(userRepository.save(user));
+        return ResultUtil.success(userService.save(user));
     }
 
-    @GetMapping(value = "/users/getAge/{id}")
-    public void getAge(@PathVariable("id") Long id) throws Exception {
-        User user = userRepository.findOne(id);
-        Integer age = user.getAge();
-
-        if(age>60){
-            throw new UserException(ResultEnum.ABOVE_60);
-        }else if(age<40){
-            throw new UserException(ResultEnum.UNDER_40);
-        }
-
-
+    @GetMapping(value = "/users/{id}")
+    public Result getUser(@PathVariable("id") Long id) {
+        return ResultUtil.success(userService.findOne(id));
     }
+
+    @PostMapping(value = "/users/set")
+    public Result setUsesr(@RequestParam("name") String name,
+                         @RequestParam("age") Integer age){
+        User user = new User(name,age);
+        return ResultUtil.success(userService.save(user));
+    }
+
 }
